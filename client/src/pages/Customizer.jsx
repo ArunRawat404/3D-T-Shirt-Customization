@@ -65,7 +65,6 @@ const Customizer = () => {
             })
             const data = await response.json();
             handleDecals(type, `data:image/png;base64,${data.photo}`)
-
         } catch (error) {
             alert(error)
         } finally {
@@ -78,8 +77,8 @@ const Customizer = () => {
         const decalType = DecalTypes[type];
         state[decalType.stateProperty] = result;
 
-        if (!activeFilterTab[decalType.FilterTab]) {
-            handleActiveFilterTab(decalType.FilterTab);
+        if (!activeFilterTab[decalType.filterTab]) {
+            handleActiveFilterTab(decalType.filterTab);
         }
     }
 
@@ -93,7 +92,7 @@ const Customizer = () => {
                 break;
             default:
                 state.isLogoTexture = true;
-                state.isFullTexture = true;
+                state.isFullTexture = false;
                 break;
         }
 
