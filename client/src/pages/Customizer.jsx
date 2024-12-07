@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSnapshot } from "valtio";
 
 import config from "../config/config";
 import state from "../store";
-import { download, logoShirt, stylishShirt } from "../assets";
+import { download } from "../assets";
 import { downloadCanvasToImage, reader } from "../config/helpers";
 import { EditorTabs, FilterTabs, DecalTypes } from "../config/constants"
 import { fadeAnimation, slideAnimation } from "../config/motion"
@@ -36,11 +36,43 @@ const Customizer = () => {
                     readFile={readFile}
                 />
             case "aipicker":
-                return <AIPicker />
+                return <AIPicker
+                    prompt={prompt}
+                    setPrompt={setPrompt}
+                    generatingImg={generatingImg}
+                    handleSubmit={handleSubmit}
+                />
             default:
                 return null;
         }
     };
+
+    const handleSubmit = async (type) => {
+        if (!prompt) return alert("Please enter a prompt")
+
+        try {
+            // call our backend to generate ai image!
+            setGeneratingImg(true);
+
+            const response = await fetch(config.development.backendUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    prompt,
+                })
+            })
+            const data = await response.json();
+            handleDecals(type, `data:image/png;base64,${data.photo}`)
+
+        } catch (error) {
+            alert(error)
+        } finally {
+            setGeneratingImg(false);
+            setActiveEditorTab("");
+        }
+    }
 
     const handleDecals = (type, result) => {
         const decalType = DecalTypes[type];
@@ -61,9 +93,17 @@ const Customizer = () => {
                 break;
             default:
                 state.isLogoTexture = true;
-                state.isFullTexture = false;
+                state.isFullTexture = true;
                 break;
         }
+
+        // after setting the state, activeFilterTab needs to be updated
+        setActiveFilterTab((prevState) => {
+            return {
+                ...prevState,
+                [tabName]: !prevState[tabName]
+            }
+        })
     }
 
     const readFile = (type) => {
@@ -112,10 +152,18 @@ const Customizer = () => {
                                 key={tab.name}
                                 tab={tab}
                                 isFilterTab
-                                isActiveTab=""
-                                handleClick={() => { }}
+                                isActiveTab={activeFilterTab[tab.name]}
+                                handleClick={() => handleActiveFilterTab(tab.name)}
                             />
                         ))}
+                        {/* Download button */}
+                        <button className='download-btn' onClick={downloadCanvasToImage}>
+                            <img
+                                src={download}
+                                alt='download_image'
+                                className='object-contain w-3/5 h-3/5'
+                            />
+                        </button>
                     </motion.div>
                 </>
             )}
