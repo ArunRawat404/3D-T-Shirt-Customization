@@ -3,7 +3,7 @@ const config = {
     backendUrl: "http://localhost:8000/api/v1/img",
   },
   production: {
-    backendUrl: "",
+    backendUrl: import.meta.env.VITE_PRODUCTION_BACKEND_URL,
   },
 };
 
