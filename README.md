@@ -1,3 +1,15 @@
+# 3D T-shirt Customization App 🎨
+
+A dynamic 3D customization application built with React, Three.js, and GenerativeAI. Personalize your virtual T-shirt with colors, logos, and AI-generated designs.
+
+---
+
+## 🌐 Live Demo
+
+Experience the live application here: [3D T-Shirt Customization App](https://3-d-t-shirt-customizer.vercel.app/)
+
+---
+
 ## 📸 Screenshots and Demo
 
 <div style="display: flex; justify-content: space-between;">
@@ -15,10 +27,6 @@
 ### 3D T-Shirt App Demo
 
 https://github.com/user-attachments/assets/5e2b782a-d8b9-4924-8176-c8363389ab61
-
-# 3D T-shirt Customization App 🎨
-
-A dynamic 3D customization application built with React, Three.js, and GenerativeAI. Personalize your virtual T-shirt with colors, logos, and AI-generated designs.
 
 ---
 
